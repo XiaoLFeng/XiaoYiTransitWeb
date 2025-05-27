@@ -213,4 +213,26 @@ export interface PagedVehicleInsuranceListEntity {
     size: number;
     /** 总数量 */
     total: number;
+}
+
+/**
+ * # 车辆简易信息实体
+ * 用于选择组件的简化车辆信息
+ */
+export interface SimpleVehicleItemEntity {
+    /** 车辆UUID */
+    vehicle_uuid: string;
+    /** 车牌号 */
+    plate_number: string;
+    /** 车辆型号 */
+    model: string;
+}
+
+/**
+ * # 车辆简易列表实体
+ * 车辆简易列表的响应数据
+ */
+export interface SimpleVehicleListEntity {
+    /** 车辆列表 */
+    list: SimpleVehicleItemEntity[];
 } 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import type { GetVehicleInsuranceListQueryDTO } from '../../../models/dto/vehicle_dto';
-import type { VehicleListItemEntity } from '../../../models/entity/vehicle_entity';
+import type { SimpleVehicleItemEntity } from '../../../models/entity/vehicle_entity';
 
 interface VehicleInsuranceSearchFormProps {
     onSearch: (params: GetVehicleInsuranceListQueryDTO) => void;
     onReset: () => void;
     initialParams?: GetVehicleInsuranceListQueryDTO;
-    vehicles: VehicleListItemEntity[];
+    vehicles: SimpleVehicleItemEntity[];
 }
 
 /**

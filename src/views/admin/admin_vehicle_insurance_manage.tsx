@@ -4,7 +4,7 @@ import {
     UpdateVehicleInsuranceAPI, 
     DeleteVehicleInsuranceAPI, 
     GetVehicleInsuranceListAPI,
-    GetVehicleListAPI
+    GetVehicleSimpleListAPI
 } from '../../apis/vehicle_api';
 import type { 
     CreateVehicleInsuranceDTO, 
@@ -14,7 +14,7 @@ import type {
 import type { 
     VehicleInsuranceDetailEntity, 
     VehicleInsuranceListItemEntity,
-    VehicleListItemEntity
+    SimpleVehicleItemEntity
 } from '../../models/entity/vehicle_entity';
 
 // 导入组件
@@ -31,7 +31,7 @@ import { VehicleInsuranceDetailModal } from '../../components/admin/vehicle/vehi
 export function AdminVehicleInsuranceManage() {
     // 状态管理
     const [insurances, setInsurances] = useState<VehicleInsuranceListItemEntity[]>([]);
-    const [vehicles, setVehicles] = useState<VehicleListItemEntity[]>([]);
+    const [vehicles, setVehicles] = useState<SimpleVehicleItemEntity[]>([]);
     const [total, setTotal] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -60,11 +60,11 @@ export function AdminVehicleInsuranceManage() {
     });
 
     /**
-     * 获取车辆列表 - 用于下拉选择
+     * 获取车辆简易列表 - 用于选择组件
      */
     const fetchVehicles = async () => {
         try {
-            const response = await GetVehicleListAPI({ page: 1, size: 1000 }); // 获取所有车辆
+            const response = await GetVehicleSimpleListAPI();
             if (response?.code === 200) {
                 setVehicles(response.data?.list || []);
             }
@@ -293,7 +293,7 @@ export function AdminVehicleInsuranceManage() {
             {/* 页面标题和操作按钮 */}
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-base-content">车辆保险管理</h1>
+                    <h1 className="text-3xl font-bold text-base-content">保险管理</h1>
                     <p className="text-base-content/60 mt-1">管理车辆保险记录、到期提醒</p>
                 </div>
                 <button 

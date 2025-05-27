@@ -20,7 +20,8 @@ import type {
     VehicleInspectionDetailEntity,
     PagedVehicleInspectionListEntity,
     VehicleInsuranceDetailEntity,
-    PagedVehicleInsuranceListEntity
+    PagedVehicleInsuranceListEntity,
+    SimpleVehicleListEntity
 } from "../models/entity/vehicle_entity";
 import type { BaseResponse } from "../models/base_response";
 
@@ -291,12 +292,32 @@ const GetVehicleInsuranceListAPI = async (params?: GetVehicleInsuranceListQueryD
     );
 }
 
+/**
+ * # GetVehicleSimpleListAPI
+ * > 该函数用于获取车辆简易列表信息，主要用于选择组件，通过向指定的后端接口发送请求。
+ * > 注意：此接口需要用户已登录状态，会自动添加授权头信息。
+ *
+ * @returns {Promise<BaseResponse<SimpleVehicleListEntity> | undefined>} - 返回一个 Promise 对象，解析为包含车辆简易列表的 BaseResponse 类型或者 undefined。
+ * @throws 当网络请求失败、服务器响应异常、用户未登录时，可能会抛出错误。
+ */
+const GetVehicleSimpleListAPI = async (): Promise<BaseResponse<SimpleVehicleListEntity> | undefined> => {
+    return BaseApi<BaseResponse<SimpleVehicleListEntity>>(
+        MethodType.GET,
+        "/api/v1/vehicles/simple",
+        null,
+        null,
+        null,
+        { "Authorization": `Bearer ${GetAuthorizationToken()}` }
+    );
+}
+
 export {
     CreateVehicleAPI,
     UpdateVehicleAPI,
     DeleteVehicleAPI,
     GetVehicleDetailAPI,
     GetVehicleListAPI,
+    GetVehicleSimpleListAPI,
     CreateVehicleInspectionAPI,
     UpdateVehicleInspectionAPI,
     DeleteVehicleInspectionAPI,

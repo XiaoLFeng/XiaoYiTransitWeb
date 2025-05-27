@@ -114,4 +114,26 @@ export interface GetDriverScheduleQueryDTO extends Record<string, unknown> {
     start_date?: string;
     /** 结束日期（可选，默认为开始日期后7天） */
     end_date?: string;
+}
+
+/**
+ * # 司机简易信息DTO
+ * 用于选择组件的简化司机信息
+ */
+export interface SimpleDriverItemDTO extends Record<string, unknown> {
+    /** 司机UUID */
+    driver_uuid: string;
+    /** 工号 */
+    employee_id: string;
+    /** 姓名 */
+    name: string;
+}
+
+/**
+ * # 司机简易列表DTO
+ * 司机简易列表的数据结构
+ */
+export interface SimpleDriverListDTO extends Record<string, unknown> {
+    /** 司机列表 */
+    list: SimpleDriverItemDTO[];
 } 

@@ -10,7 +10,8 @@ import type {
 import type { 
     DriverDetailEntity, 
     PagedDriverListEntity, 
-    DriverScheduleEntity 
+    DriverScheduleEntity,
+    SimpleDriverListEntity
 } from "../models/entity/driver_entity";
 import type { BaseResponse } from "../models/base_response";
 
@@ -134,11 +135,31 @@ const GetDriverScheduleAPI = async (params: GetDriverScheduleQueryDTO): Promise<
     );
 }
 
+/**
+ * # GetDriverSimpleListAPI
+ * > 该函数用于获取司机简易列表信息，主要用于选择组件，通过向指定的后端接口发送请求。
+ * > 注意：此接口需要用户已登录状态，会自动添加授权头信息。
+ *
+ * @returns {Promise<BaseResponse<SimpleDriverListEntity> | undefined>} - 返回一个 Promise 对象，解析为包含司机简易列表的 BaseResponse 类型或者 undefined。
+ * @throws 当网络请求失败、服务器响应异常、用户未登录时，可能会抛出错误。
+ */
+const GetDriverSimpleListAPI = async (): Promise<BaseResponse<SimpleDriverListEntity> | undefined> => {
+    return BaseApi<BaseResponse<SimpleDriverListEntity>>(
+        MethodType.GET,
+        "/api/v1/driver/list/simple",
+        null,
+        null,
+        null,
+        { "Authorization": `Bearer ${GetAuthorizationToken()}` }
+    );
+}
+
 export {
     CreateDriverAPI,
     UpdateDriverAPI,
     DeleteDriverAPI,
     GetDriverDetailAPI,
     GetDriverListAPI,
+    GetDriverSimpleListAPI,
     GetDriverScheduleAPI
 }; 

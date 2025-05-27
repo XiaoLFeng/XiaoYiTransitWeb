@@ -202,4 +202,26 @@ export interface GetVehicleInsuranceListQueryDTO extends Record<string, unknown>
 export interface DeleteVehicleInsuranceQueryDTO extends Record<string, unknown> {
     /** 保险记录UUID */
     insurance_uuid: string;
+}
+
+/**
+ * # 车辆简易信息DTO
+ * 用于选择组件的简化车辆信息
+ */
+export interface SimpleVehicleItemDTO extends Record<string, unknown> {
+    /** 车辆UUID */
+    vehicle_uuid: string;
+    /** 车牌号 */
+    plate_number: string;
+    /** 车辆型号 */
+    model: string;
+}
+
+/**
+ * # 车辆简易列表DTO
+ * 车辆简易列表的数据结构
+ */
+export interface SimpleVehicleListDTO extends Record<string, unknown> {
+    /** 车辆列表 */
+    list: SimpleVehicleItemDTO[];
 } 

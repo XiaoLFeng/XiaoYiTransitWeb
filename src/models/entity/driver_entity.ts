@@ -117,4 +117,26 @@ export interface DriverScheduleEntity {
     end_date?: string;
     /** 排班列表 */
     shifts: DriverShiftItemEntity[];
+}
+
+/**
+ * # 司机简易信息实体
+ * 用于选择组件的简化司机信息
+ */
+export interface SimpleDriverItemEntity {
+    /** 司机UUID */
+    driver_uuid: string;
+    /** 工号 */
+    employee_id: string;
+    /** 姓名 */
+    name: string;
+}
+
+/**
+ * # 司机简易列表实体
+ * 司机简易列表的响应数据
+ */
+export interface SimpleDriverListEntity {
+    /** 司机列表 */
+    list: SimpleDriverItemEntity[];
 } 

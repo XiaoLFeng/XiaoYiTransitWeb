@@ -4,7 +4,7 @@ import {
     UpdateVehicleInspectionAPI, 
     DeleteVehicleInspectionAPI, 
     GetVehicleInspectionListAPI,
-    GetVehicleListAPI
+    GetVehicleSimpleListAPI
 } from '../../apis/vehicle_api';
 import type { 
     CreateVehicleInspectionDTO, 
@@ -14,7 +14,7 @@ import type {
 import type { 
     VehicleInspectionDetailEntity, 
     VehicleInspectionListItemEntity,
-    VehicleListItemEntity
+    SimpleVehicleItemEntity
 } from '../../models/entity/vehicle_entity';
 
 // 导入组件
@@ -31,7 +31,7 @@ import { VehicleInspectionDetailModal } from '../../components/admin/vehicle/veh
 export function AdminVehicleInspectionManage() {
     // 状态管理
     const [inspections, setInspections] = useState<VehicleInspectionListItemEntity[]>([]);
-    const [vehicles, setVehicles] = useState<VehicleListItemEntity[]>([]);
+    const [vehicles, setVehicles] = useState<SimpleVehicleItemEntity[]>([]);
     const [total, setTotal] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -58,11 +58,11 @@ export function AdminVehicleInspectionManage() {
     });
 
     /**
-     * 获取车辆列表 - 用于下拉选择
+     * 获取车辆简易列表 - 用于选择组件
      */
     const fetchVehicles = async () => {
         try {
-            const response = await GetVehicleListAPI({ page: 1, size: 1000 }); // 获取所有车辆
+            const response = await GetVehicleSimpleListAPI();
             if (response?.code === 200) {
                 setVehicles(response.data?.list || []);
             }
