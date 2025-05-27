@@ -55,7 +55,7 @@ export function AuthLogin() {
                 const expiresDate = new Date(token.expires_at);
 
                 saveAuthData(
-                    token.token_uuid,
+                    `Bearer ${token.token_uuid}`,
                     response.data.user,
                     expiresDate
                 );

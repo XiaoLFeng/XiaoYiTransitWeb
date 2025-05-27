@@ -6,6 +6,8 @@ import type { UserInfoEntity } from '../models/entity/user_info_entity';
 import type { BaseResponse } from '../models/base_response';
 import { logout, formatUserDisplayName, isUserActive } from '../assets/ts/auth_utils';
 import { AdminDashboard } from './admin/admin_dashboard';
+import { AdminDriverManage } from './admin/admin_driver_manage';
+import { AdminSidebar, getMenuItemByPath } from '../components/admin';
 
 /**
  * # 管理员基础布局页面
@@ -67,30 +69,6 @@ export function BaseAdmin() {
         setSidebarCollapsed(!sidebarCollapsed);
     };
 
-    // 菜单项配置
-    const menuItems = [
-        { id: 'dashboard', name: '仪表板', icon: '📊', path: '/admin/dashboard' },
-        { id: 'vehicles', name: '车辆管理', icon: '🚌', path: '/admin/vehicles' },
-        { id: 'routes', name: '线路管理', icon: '🗺️', path: '/admin/routes' },
-        { id: 'drivers', name: '司机管理', icon: '👨‍💼', path: '/admin/drivers' },
-        { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' },
-        { id: 'reports', name: '统计报表', icon: '📈', path: '/admin/reports' },
-        { id: 'users', name: '用户管理', icon: '👥', path: '/admin/users' },
-        { id: 'settings', name: '系统设置', icon: '⚙️', path: '/admin/settings' },
-    ];
-
-    // 获取当前激活的菜单项
-    const getActiveMenuItem = () => {
-        const currentPath = location.pathname;
-        const activeItem = menuItems.find(item => item.path === currentPath);
-        return activeItem?.id || 'dashboard';
-    };
-
-    // 处理菜单点击
-    const handleMenuClick = (path: string) => {
-        navigate(path);
-    };
-
     // 组件挂载时获取用户信息
     useEffect(() => {
         fetchCurrentUser();
@@ -133,49 +111,10 @@ export function BaseAdmin() {
     return (
         <div className="min-h-screen bg-base-100">
             {/* 侧边栏 */}
-            <div className={`fixed inset-y-0 left-0 z-50 bg-base-200 transition-all duration-300 ${
-                sidebarCollapsed ? 'w-16' : 'w-64'
-            }`}>
-                {/* 侧边栏头部 */}
-                <div className="flex items-center justify-between p-4 border-b border-base-300">
-                    {!sidebarCollapsed && (
-                        <div className="flex items-center space-x-2">
-                            <span className="text-2xl">🚌</span>
-                            <h1 className="text-lg font-bold text-primary">小易出行</h1>
-                        </div>
-                    )}
-                    <button
-                        onClick={toggleSidebar}
-                        className="btn btn-ghost btn-sm"
-                    >
-                        {sidebarCollapsed ? '→' : '←'}
-                    </button>
-                </div>
-
-                {/* 导航菜单 */}
-                <nav className="p-2">
-                    <ul className="space-y-1">
-                        {menuItems.map((item) => (
-                            <li key={item.id}>
-                                <button
-                                    onClick={() => handleMenuClick(item.path)}
-                                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                                        getActiveMenuItem() === item.id
-                                            ? 'bg-primary text-primary-content'
-                                            : 'hover:bg-base-300'
-                                    }`}
-                                    title={sidebarCollapsed ? item.name : ''}
-                                >
-                                    <span className="text-lg">{item.icon}</span>
-                                    {!sidebarCollapsed && (
-                                        <span className="font-medium">{item.name}</span>
-                                    )}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-            </div>
+            <AdminSidebar 
+                collapsed={sidebarCollapsed} 
+                onToggleCollapse={toggleSidebar} 
+            />
 
             {/* 主要内容区域 */}
             <div className={`transition-all duration-300 ${
@@ -187,7 +126,7 @@ export function BaseAdmin() {
                         {/* 页面标题 */}
                         <div>
                             <h2 className="text-2xl font-bold text-base-content">
-                                {menuItems.find(item => item.id === getActiveMenuItem())?.name || '管理后台'}
+                                {getMenuItemByPath(location.pathname).name}
                             </h2>
                             <p className="text-sm text-base-content/60 mt-1">
                                 欢迎使用公交车辆信息管理系统
@@ -250,7 +189,7 @@ export function BaseAdmin() {
                         <Route path="/dashboard" element={<AdminDashboard />} />
                         <Route path="/vehicles" element={<ComingSoonPage title="车辆管理" />} />
                         <Route path="/routes" element={<ComingSoonPage title="线路管理" />} />
-                        <Route path="/drivers" element={<ComingSoonPage title="司机管理" />} />
+                        <Route path="/drivers" element={<AdminDriverManage />} />
                         <Route path="/maintenance" element={<ComingSoonPage title="维护记录" />} />
                         <Route path="/reports" element={<ComingSoonPage title="统计报表" />} />
                         <Route path="/users" element={<ComingSoonPage title="用户管理" />} />
