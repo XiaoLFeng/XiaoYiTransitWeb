@@ -34,6 +34,8 @@ export function AdminSidebar({ collapsed, onToggleCollapse }: AdminSidebarProps)
     const menuItems: MenuItem[] = [
         { id: 'dashboard', name: '仪表板', icon: '📊', path: '/admin/dashboard' },
         { id: 'vehicles', name: '车辆管理', icon: '🚌', path: '/admin/vehicles' },
+        { id: 'insurance', name: '保险管理', icon: '🛡️', path: '/admin/insurance' },
+        { id: 'inspection', name: '年检管理', icon: '🔍', path: '/admin/inspection' },
         { id: 'routes', name: '线路管理', icon: '🗺️', path: '/admin/routes' },
         { id: 'drivers', name: '司机管理', icon: '👨‍💼', path: '/admin/drivers' },
         { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' },
@@ -45,6 +47,7 @@ export function AdminSidebar({ collapsed, onToggleCollapse }: AdminSidebarProps)
     // 获取当前激活的菜单项
     const getActiveMenuItem = (): string => {
         const currentPath = location.pathname;
+        
         const activeItem = menuItems.find(item => item.path === currentPath);
         return activeItem?.id || 'dashboard';
     };
@@ -126,6 +129,8 @@ export function getMenuItemByPath(pathname: string): { id: string; name: string 
     const menuItems: MenuItem[] = [
         { id: 'dashboard', name: '仪表板', icon: '📊', path: '/admin/dashboard' },
         { id: 'vehicles', name: '车辆管理', icon: '🚌', path: '/admin/vehicles' },
+        { id: 'insurance', name: '保险管理', icon: '🛡️', path: '/admin/insurance' },
+        { id: 'inspection', name: '年检管理', icon: '🔍', path: '/admin/inspection' },
         { id: 'routes', name: '线路管理', icon: '🗺️', path: '/admin/routes' },
         { id: 'drivers', name: '司机管理', icon: '👨‍💼', path: '/admin/drivers' },
         { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' },

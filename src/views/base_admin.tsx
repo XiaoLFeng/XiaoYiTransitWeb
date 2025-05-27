@@ -7,6 +7,9 @@ import type { BaseResponse } from '../models/base_response';
 import { logout, formatUserDisplayName, isUserActive } from '../assets/ts/auth_utils';
 import { AdminDashboard } from './admin/admin_dashboard';
 import { AdminDriverManage } from './admin/admin_driver_manage';
+import { AdminVehicleManage } from './admin/admin_vehicle_manage';
+import { AdminVehicleInsuranceManage } from './admin/admin_vehicle_insurance_manage';
+import { AdminVehicleInspectionManage } from './admin/admin_vehicle_inspection_manage';
 import { AdminSidebar, getMenuItemByPath } from '../components/admin';
 
 /**
@@ -187,7 +190,12 @@ export function BaseAdmin() {
                 <main className="p-6">
                     <Routes>
                         <Route path="/dashboard" element={<AdminDashboard />} />
-                        <Route path="/vehicles" element={<ComingSoonPage title="车辆管理" />} />
+                        {/* 车辆管理路由 */}
+                        <Route path="/vehicles" element={<AdminVehicleManage />} />
+                        {/* 保险管理路由 */}
+                        <Route path="/insurance" element={<AdminVehicleInsuranceManage />} />
+                        {/* 年检管理路由 */}
+                        <Route path="/inspection" element={<AdminVehicleInspectionManage />} />
                         <Route path="/routes" element={<ComingSoonPage title="线路管理" />} />
                         <Route path="/drivers" element={<AdminDriverManage />} />
                         <Route path="/maintenance" element={<ComingSoonPage title="维护记录" />} />
