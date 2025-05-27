@@ -1,5 +1,5 @@
 import cookie from 'react-cookies';
-import type { UserInfoEntity } from '../../models/entity/auth_entity';
+import type { UserInfoEntity } from '../../models/entity/merge/auth_login_back_entity';
 
 /**
  * # 检查用户是否已登录

@@ -1,6 +1,7 @@
 import { BaseApi, MethodType, GetAuthorizationToken } from "../assets/ts/base_api";
 import type { AuthLoginDTO, AuthChangePasswordDTO } from "../models/dto/auth_dto";
-import type { AuthLoginBackEntity } from "../models/entity/auth_entity";
+import type { AuthLoginBackEntity } from "../models/entity/merge/auth_login_back_entity";
+import type { AuthCurrentBackEntity } from "../models/entity/merge/auth_current_back_entity";
 import type { BaseResponse } from "../models/base_response";
 
 /**
@@ -42,7 +43,27 @@ const AuthChangePasswordAPI = async (data: AuthChangePasswordDTO): Promise<BaseR
     );
 }
 
+/**
+ * # AuthCurrentAPI
+ * > 该函数用于获取当前登录用户的详细信息，包括用户基本信息、角色信息和令牌信息。
+ * > 注意：此接口需要用户已登录状态，会自动添加授权头信息。
+ *
+ * @returns {Promise<BaseResponse<AuthCurrentBackEntity> | undefined>} - 返回一个 Promise 对象，解析为包含当前用户信息的 BaseResponse 类型或者 undefined。
+ * @throws 当网络请求失败、服务器响应异常、用户未登录或授权失效时，可能会抛出错误。
+ */
+const AuthCurrentAPI = async (): Promise<BaseResponse<AuthCurrentBackEntity> | undefined> => {
+    return BaseApi<BaseResponse<AuthCurrentBackEntity>>(
+        MethodType.GET,
+        "/api/v1/auth/current",
+        null,
+        null,
+        null,
+        { "Authorization": `Bearer ${GetAuthorizationToken()}` }
+    );
+}
+
 export {
     AuthLoginAPI,
-    AuthChangePasswordAPI
+    AuthChangePasswordAPI,
+    AuthCurrentAPI
 };

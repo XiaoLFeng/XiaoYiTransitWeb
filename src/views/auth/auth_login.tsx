@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AuthLoginAPI } from '../../apis/auth_api';
 import type { AuthLoginDTO } from '../../models/dto/auth_dto';
-import type { AuthLoginBackEntity } from '../../models/entity/auth_entity';
+import type { AuthLoginBackEntity } from '../../models/entity/merge/auth_login_back_entity';
 import type { BaseResponse } from '../../models/base_response';
 import { saveAuthData } from '../../assets/ts/auth_utils';
 
