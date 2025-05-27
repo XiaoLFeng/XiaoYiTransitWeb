@@ -1,10 +1,10 @@
 import type { CreateVehicleInspectionDTO } from '../../../models/dto/vehicle_dto';
-import type { VehicleListItemEntity } from '../../../models/entity/vehicle_entity';
+import type { SimpleVehicleItemEntity } from '../../../models/entity/vehicle_entity';
 
 interface VehicleInspectionCreateModalProps {
     formData: CreateVehicleInspectionDTO;
     setFormData: (data: CreateVehicleInspectionDTO) => void;
-    vehicles: VehicleListItemEntity[];
+    vehicles: SimpleVehicleItemEntity[];
     onConfirm: () => void;
     onCancel: () => void;
 }

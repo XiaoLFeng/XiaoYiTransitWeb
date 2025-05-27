@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import type { GetVehicleInspectionListQueryDTO } from '../../../models/dto/vehicle_dto';
-import type { VehicleListItemEntity } from '../../../models/entity/vehicle_entity';
+import type { SimpleVehicleItemEntity } from '../../../models/entity/vehicle_entity';
 
 interface VehicleInspectionSearchFormProps {
     onSearch: (params: GetVehicleInspectionListQueryDTO) => void;
     onReset: () => void;
     initialParams?: GetVehicleInspectionListQueryDTO;
-    vehicles: VehicleListItemEntity[];
+    vehicles: SimpleVehicleItemEntity[];
 }
 
 /**
@@ -68,7 +68,7 @@ export function VehicleInspectionSearchForm({ onSearch, onReset, initialParams =
                         </label>
                         <select 
                             className="select select-bordered"
-                            value={searchParams.result || ''}
+                            value={searchParams.result as string || ''}
                             onChange={(e) => handleParamChange('result', e.target.value || undefined)}
                         >
                             <option value="">全部结果</option>
@@ -86,7 +86,7 @@ export function VehicleInspectionSearchForm({ onSearch, onReset, initialParams =
                             type="text" 
                             placeholder="输入检测机构" 
                             className="input input-bordered"
-                            value={searchParams.agency || ''}
+                            value={searchParams.agency as string || ''}
                             onChange={(e) => handleParamChange('agency', e.target.value || undefined)}
                         />
                     </div>
