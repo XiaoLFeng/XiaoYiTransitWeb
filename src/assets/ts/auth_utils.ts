@@ -1,5 +1,5 @@
 import cookie from 'react-cookies';
-import type { UserInfoEntity } from '../../models/entity/merge/auth_login_back_entity';
+import type { UserInfoEntity } from '../../models/entity/user_info_entity';
 
 /**
  * # 检查用户是否已登录
@@ -62,7 +62,6 @@ export const saveAuthData = (token: string, userInfo: UserInfoEntity, expiresAt:
     cookie.save('token', token, {
         path: '/',
         expires: expiresAt,
-        secure: process.env.NODE_ENV === 'production', // 生产环境使用https
         httpOnly: false
     });
     

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { AuthLoginAPI } from '../../apis/auth_api';
 import type { AuthLoginDTO } from '../../models/dto/auth_dto';
 import type { AuthLoginBackEntity } from '../../models/entity/merge/auth_login_back_entity';
@@ -13,6 +14,7 @@ export function AuthLogin() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string>('');
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     // 处理输入变化
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +55,7 @@ export function AuthLogin() {
                 const expiresDate = new Date(token.expires_at);
 
                 saveAuthData(
-                    `Bearer ${token.token_uuid}`,
+                    token.token_uuid,
                     response.data.user,
                     expiresDate
                 );
@@ -61,8 +63,8 @@ export function AuthLogin() {
                 // 登录成功提示
                 alert('登录成功！');
 
-                // 这里可以添加路由跳转逻辑
-                // 例如：navigate('/dashboard');
+                // 跳转到管理员仪表板
+                navigate('/admin/dashboard');
 
             } else {
                 if (response?.code === 40007) {
