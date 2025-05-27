@@ -29,8 +29,7 @@ export function BaseAuth() {
                     
                     {/* 子路由内容 */}
                     <Routes>
-                        <Route path="login" element={<AuthLogin />} />
-                        <Route path="*" element={<AuthLogin />} />
+                        <Route path="/login" element={<AuthLogin />} />
                     </Routes>
                     
                     {/* 底部信息 */}
