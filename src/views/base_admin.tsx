@@ -11,6 +11,7 @@ import { AdminVehicleManage } from './admin/admin_vehicle_manage';
 import { AdminVehicleInsuranceManage } from './admin/admin_vehicle_insurance_manage';
 import { AdminVehicleInspectionManage } from './admin/admin_vehicle_inspection_manage';
 import { AdminRouteManage } from './admin/admin_route_manage';
+import { AdminStationManage } from './admin/admin_station_manage';
 import { AdminSidebar, getMenuItemByPath } from '../components/admin/admin_sidebar';
 
 /**
@@ -203,6 +204,7 @@ export function BaseAdmin() {
                         <Route path="/reports" element={<ComingSoonPage title="统计报表" />} />
                         <Route path="/users" element={<ComingSoonPage title="用户管理" />} />
                         <Route path="/settings" element={<ComingSoonPage title="系统设置" />} />
+                        <Route path="/stations" element={<AdminStationManage />} />
                         {/* 默认重定向到仪表板 */}
                         <Route path="/" element={<AdminDashboard />} />
                     </Routes>

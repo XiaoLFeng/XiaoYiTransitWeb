@@ -5,12 +5,15 @@ import {
     DeleteRouteAPI, 
     GetRouteDetailAPI, 
     GetRouteListAPI,
-    GetRouteStationsAPI
+    GetRouteStationsAPI,
+    AddRouteStationAPI,
+    DeleteRouteStationAPI
 } from '../../apis/route_api';
 import type { 
     CreateRouteDTO, 
     UpdateRouteDTO, 
-    GetRouteListQueryDTO 
+    GetRouteListQueryDTO,
+    AddRouteStationDTO
 } from '../../models/dto/route_dto';
 import type { 
     RouteDetailEntity, 
@@ -25,6 +28,7 @@ import { RouteCreateModal } from '../../components/admin/route/route_create_moda
 import { RouteEditModal } from '../../components/admin/route/route_edit_modal';
 import { RouteDetailModal } from '../../components/admin/route/route_detail_modal';
 import { RouteStationsModal } from '../../components/admin/route/route_stations_modal';
+import { RouteAddStationModal } from '../../components/admin/route/route_add_station_modal';
 
 /**
  * # 线路管理页面
@@ -44,6 +48,7 @@ export function AdminRouteManage() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [showStationsModal, setShowStationsModal] = useState(false);
+    const [showAddStationModal, setShowAddStationModal] = useState(false);
     
     // 当前操作的线路
     const [currentRoute, setCurrentRoute] = useState<RouteDetailEntity | null>(null);
@@ -202,6 +207,99 @@ export function AdminRouteManage() {
             console.error('获取线路站点错误:', error);
             alert('获取站点信息失败，请稍后重试');
         }
+    };
+
+    /**
+     * 刷新当前线路站点
+     */
+    const handleRefreshStations = async () => {
+        if (!currentRouteStations) return;
+        
+        try {
+            const response = await GetRouteStationsAPI(currentRouteStations.route_uuid, { 
+                route_uuid: currentRouteStations.route_uuid 
+            });
+            if (response?.code === 200) {
+                setCurrentRouteStations(response.data || null);
+            } else {
+                alert(`刷新站点信息失败: ${response?.message}`);
+            }
+        } catch (error) {
+            console.error('刷新线路站点错误:', error);
+            alert('刷新站点信息失败，请稍后重试');
+        }
+    };
+
+    /**
+     * 添加站点到线路
+     */
+    const handleAddStation = () => {
+        setShowAddStationModal(true);
+    };
+
+    /**
+     * 确认添加站点
+     */
+    const handleConfirmAddStation = async (stationData: AddRouteStationDTO) => {
+        try {
+            console.log('🚏 添加站点到线路 - 数据:', stationData);
+            const response = await AddRouteStationAPI(stationData.route_uuid, stationData);
+            console.log('📡 添加站点响应:', response);
+            
+            if (response?.code === 200) {
+                setShowAddStationModal(false);
+                alert('站点添加成功！');
+                
+                // 刷新站点列表
+                if (currentRouteStations) {
+                    handleRefreshStations();
+                }
+            } else {
+                alert(`添加站点失败: ${response?.message}`);
+            }
+        } catch (error) {
+            console.error('💥 添加站点异常:', error);
+            alert('添加站点失败，请稍后重试。详情请查看控制台');
+        }
+    };
+
+    /**
+     * 删除站点
+     */
+    const handleDeleteStation = async (routeStationUuid: string, stationName: string) => {
+        if (!confirm(`确定要从线路中删除站点 ${stationName} 吗？此操作无法撤销。`)) {
+            return;
+        }
+        
+        try {
+            console.log('🗑️ 删除线路站点 - UUID:', routeStationUuid);
+            const response = await DeleteRouteStationAPI(routeStationUuid, { 
+                route_station_uuid: routeStationUuid 
+            });
+            console.log('📡 删除站点响应:', response);
+            
+            if (response?.code === 200) {
+                alert('站点删除成功！');
+                
+                // 刷新站点列表
+                if (currentRouteStations) {
+                    handleRefreshStations();
+                }
+            } else {
+                alert(`删除站点失败: ${response?.message}`);
+            }
+        } catch (error) {
+            console.error('💥 删除站点异常:', error);
+            alert('删除站点失败，请稍后重试。详情请查看控制台');
+        }
+    };
+
+    /**
+     * 编辑站点（暂未实现）
+     */
+    const handleEditStation = (routeStationUuid: string) => {
+        alert('编辑站点功能正在开发中...');
+        console.log('编辑站点:', routeStationUuid);
     };
 
     /**
@@ -397,6 +495,24 @@ export function AdminRouteManage() {
                         setShowStationsModal(false);
                         setCurrentRouteStations(null);
                     }}
+                    onAddStation={handleAddStation}
+                    onEditStation={handleEditStation}
+                    onDeleteStation={handleDeleteStation}
+                    onRefresh={handleRefreshStations}
+                />
+            )}
+
+            {/* 添加站点模态框 */}
+            {showAddStationModal && currentRouteStations && (
+                <RouteAddStationModal
+                    routeUuid={currentRouteStations.route_uuid}
+                    routeName={`线路 ${currentRouteStations.route_uuid.substring(0, 8)}...`}
+                    existingStations={currentRouteStations.stations.map(station => ({
+                        sequence: station.sequence,
+                        name: station.name
+                    }))}
+                    onConfirm={handleConfirmAddStation}
+                    onCancel={() => setShowAddStationModal(false)}
                 />
             )}
         </div>

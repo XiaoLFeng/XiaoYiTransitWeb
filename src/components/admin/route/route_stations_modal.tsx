@@ -3,13 +3,24 @@ import type { RouteStationsEntity } from '../../../models/entity/route_entity';
 interface RouteStationsModalProps {
     routeStations: RouteStationsEntity;
     onClose: () => void;
+    onAddStation?: (routeUuid: string) => void;
+    onEditStation?: (routeStationUuid: string) => void;
+    onDeleteStation?: (routeStationUuid: string, stationName: string) => void;
+    onRefresh?: () => void;
 }
 
 /**
  * # 线路站点模态框组件
  * 用于显示线路的站点列表
  */
-export function RouteStationsModal({ routeStations, onClose }: RouteStationsModalProps) {
+export function RouteStationsModal({ 
+    routeStations, 
+    onClose, 
+    onAddStation,
+    onEditStation,
+    onDeleteStation,
+    onRefresh
+}: RouteStationsModalProps) {
     /**
      * 格式化距离
      */
@@ -47,7 +58,30 @@ export function RouteStationsModal({ routeStations, onClose }: RouteStationsModa
                             </span>
                         </div>
                     </div>
-                    <button className="btn btn-sm btn-circle btn-ghost" onClick={onClose}>✕</button>
+                    <div className="flex items-center gap-2">
+                        {/* 刷新按钮 */}
+                        {onRefresh && (
+                            <button 
+                                className="btn btn-sm btn-outline"
+                                onClick={onRefresh}
+                                title="刷新站点列表"
+                            >
+                                🔄
+                            </button>
+                        )}
+                        
+                        {/* 添加站点按钮 */}
+                        {onAddStation && (
+                            <button 
+                                className="btn btn-sm btn-primary"
+                                onClick={() => onAddStation(routeStations.route_uuid)}
+                            >
+                                ➕ 添加站点
+                            </button>
+                        )}
+                        
+                        <button className="btn btn-sm btn-circle btn-ghost" onClick={onClose}>✕</button>
+                    </div>
                 </div>
 
                 {/* 空状态 */}
@@ -55,7 +89,15 @@ export function RouteStationsModal({ routeStations, onClose }: RouteStationsModa
                     <div className="text-center py-12">
                         <div className="text-6xl mb-4">🚏</div>
                         <h4 className="text-lg font-semibold mb-2">该线路暂无站点信息</h4>
-                        <p className="text-base-content/60">请联系管理员添加站点信息</p>
+                        <p className="text-base-content/60 mb-4">请添加站点以完善线路信息</p>
+                        {onAddStation && (
+                            <button 
+                                className="btn btn-primary"
+                                onClick={() => onAddStation(routeStations.route_uuid)}
+                            >
+                                添加第一个站点
+                            </button>
+                        )}
                     </div>
                 ) : (
                     <>
@@ -75,12 +117,35 @@ export function RouteStationsModal({ routeStations, onClose }: RouteStationsModa
                                                 </div>
                                             </div>
                                             
-                                            <div className="flex gap-2">
+                                            <div className="flex items-center gap-2">
                                                 <div className="badge badge-outline">
                                                     {formatDistance(station.distance_from_start)}
                                                 </div>
                                                 <div className="badge badge-info badge-outline">
                                                     {formatTime(station.estimated_time)}
+                                                </div>
+                                                
+                                                {/* 站点操作按钮 */}
+                                                <div className="flex gap-1 ml-2">
+                                                    {onEditStation && (
+                                                        <button
+                                                            className="btn btn-ghost btn-xs"
+                                                            onClick={() => onEditStation(station.route_station_uuid)}
+                                                            title="编辑站点"
+                                                        >
+                                                            ✏️
+                                                        </button>
+                                                    )}
+                                                    
+                                                    {onDeleteStation && (
+                                                        <button
+                                                            className="btn btn-ghost btn-xs text-error"
+                                                            onClick={() => onDeleteStation(station.route_station_uuid, station.name)}
+                                                            title="删除站点"
+                                                        >
+                                                            🗑️
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
