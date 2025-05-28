@@ -10,7 +10,8 @@ import { AdminDriverManage } from './admin/admin_driver_manage';
 import { AdminVehicleManage } from './admin/admin_vehicle_manage';
 import { AdminVehicleInsuranceManage } from './admin/admin_vehicle_insurance_manage';
 import { AdminVehicleInspectionManage } from './admin/admin_vehicle_inspection_manage';
-import { AdminSidebar, getMenuItemByPath } from '../components/admin';
+import { AdminRouteManage } from './admin/admin_route_manage';
+import { AdminSidebar, getMenuItemByPath } from '../components/admin/admin_sidebar';
 
 /**
  * # 管理员基础布局页面
@@ -196,7 +197,7 @@ export function BaseAdmin() {
                         <Route path="/insurance" element={<AdminVehicleInsuranceManage />} />
                         {/* 年检管理路由 */}
                         <Route path="/inspection" element={<AdminVehicleInspectionManage />} />
-                        <Route path="/routes" element={<ComingSoonPage title="线路管理" />} />
+                        <Route path="/routes" element={<AdminRouteManage />} />
                         <Route path="/drivers" element={<AdminDriverManage />} />
                         <Route path="/maintenance" element={<ComingSoonPage title="维护记录" />} />
                         <Route path="/reports" element={<ComingSoonPage title="统计报表" />} />
