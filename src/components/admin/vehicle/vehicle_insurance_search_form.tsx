@@ -83,7 +83,7 @@ export function VehicleInsuranceSearchForm({ onSearch, onReset, initialParams = 
                             type="text" 
                             placeholder="输入保险公司" 
                             className="input input-bordered"
-                            value={searchParams.insurance_company || ''}
+                            value={searchParams.insurance_company as string || ''}
                             onChange={(e) => handleParamChange('insurance_company', e.target.value || undefined)}
                         />
                     </div>

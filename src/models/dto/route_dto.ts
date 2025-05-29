@@ -141,9 +141,9 @@ export interface AddRouteStationDTO extends Record<string, unknown> {
     station_uuid: string;
     /** 站点顺序 */
     sequence: number;
-    /** 距起点距离(km) */
+    /** 距上一站距离(km)，首站为0 */
     distance_from_start: number;
-    /** 预计到达时间(分钟) */
+    /** 从上一站到此站的预计用时(分钟)，首站为0 */
     estimated_time: number;
 }
 
@@ -156,9 +156,9 @@ export interface UpdateRouteStationDTO extends Record<string, unknown> {
     route_station_uuid: string;
     /** 站点顺序 */
     sequence: number;
-    /** 距起点距离(km) */
+    /** 距上一站距离(km)，首站为0 */
     distance_from_start: number;
-    /** 预计到达时间(分钟) */
+    /** 从上一站到此站的预计用时(分钟)，首站为0 */
     estimated_time: number;
 }
 

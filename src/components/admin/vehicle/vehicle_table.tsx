@@ -55,14 +55,6 @@ export function VehicleTable({
         return new Date(dateString).toLocaleDateString('zh-CN');
     };
 
-    /**
-     * 格式化价格
-     */
-    const formatPrice = (price?: number) => {
-        if (price === undefined || price === null) return '-';
-        return `￥${price.toLocaleString('zh-CN')}`;
-    };
-
     return (
         <div className="card bg-base-100 shadow-xl">
             <div className="card-body">

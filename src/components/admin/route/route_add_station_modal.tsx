@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { AddRouteStationDTO } from '../../../models/dto/route_dto';
+import type { StationSimpleEntity } from '../../../models/entity/station_entity';
+import { GetStationSimpleListAPI } from '../../../apis/station_api';
 
 interface RouteAddStationModalProps {
     routeUuid: string;
     routeName: string;
-    existingStations: Array<{ sequence: number; name: string; }>;
+    existingStations: Array<{ sequence: number; name: string; station_uuid: string; }>;
     onConfirm: (data: AddRouteStationDTO) => void;
     onCancel: () => void;
 }
 
 /**
  * # 线路添加站点模态框组件
- * 用于向线路添加新的站点
+ * 用于向线路添加现有的站点
  */
 export function RouteAddStationModal({ 
     routeUuid, 
@@ -20,39 +22,65 @@ export function RouteAddStationModal({
     onConfirm, 
     onCancel 
 }: RouteAddStationModalProps) {
-    const [formData, setFormData] = useState<Omit<AddRouteStationDTO, 'route_uuid'>>({
+    // 表单数据状态
+    const [formData, setFormData] = useState({
         station_uuid: '',
         sequence: existingStations.length + 1,
         distance_from_start: 0,
         estimated_time: 0
     });
 
-    const [stationInfo, setStationInfo] = useState({
-        name: '',
-        code: '',
-        address: '',
-        longitude: 0,
-        latitude: 0
-    });
+    // 站点列表状态
+    const [stations, setStations] = useState<StationSimpleEntity[]>([]);
+    const [loadingStations, setLoadingStations] = useState(true);
+    const [selectedStation, setSelectedStation] = useState<StationSimpleEntity | null>(null);
 
-    const handleInputChange = (field: keyof typeof formData, value: string | number) => {
+    // 获取可用站点列表
+    useEffect(() => {
+        const fetchStations = async () => {
+            try {
+                setLoadingStations(true);
+                const response = await GetStationSimpleListAPI({ status: 1 }); // 只获取启用的站点
+                
+                if (response?.code === 200 && response.data?.stations) {
+                    // 过滤掉已经添加到线路的站点
+                    const existingStationUuids = existingStations.map(s => s.station_uuid);
+                    const availableStations = response.data.stations.filter(
+                        station => !existingStationUuids.includes(station.station_uuid)
+                    );
+                    setStations(availableStations);
+                } else {
+                    console.error('获取站点列表失败:', response?.message);
+                    setStations([]);
+                }
+            } catch (error) {
+                console.error('获取站点列表异常:', error);
+                setStations([]);
+            } finally {
+                setLoadingStations(false);
+            }
+        };
+
+        fetchStations();
+    }, [existingStations]);
+
+    const handleInputChange = (field: string, value: string | number) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
         }));
     };
 
-    const handleStationInfoChange = (field: keyof typeof stationInfo, value: string | number) => {
-        setStationInfo(prev => ({
-            ...prev,
-            [field]: value
-        }));
+    const handleStationSelect = (stationUuid: string) => {
+        const station = stations.find(s => s.station_uuid === stationUuid);
+        setSelectedStation(station || null);
+        handleInputChange('station_uuid', stationUuid);
     };
 
     const handleSubmit = () => {
         // 验证必填字段
-        if (!stationInfo.name.trim()) {
-            alert('请输入站点名称');
+        if (!formData.station_uuid) {
+            alert('请选择要添加的站点');
             return;
         }
         
@@ -62,12 +90,12 @@ export function RouteAddStationModal({
         }
         
         if (formData.distance_from_start < 0) {
-            alert('距起点距离不能为负数');
+            alert('距上一站距离不能为负数');
             return;
         }
         
         if (formData.estimated_time < 0) {
-            alert('预计到达时间不能为负数');
+            alert('从上一站用时不能为负数');
             return;
         }
 
@@ -80,27 +108,24 @@ export function RouteAddStationModal({
             }
         }
 
-        // 生成临时的站点UUID（实际应用中可能需要先创建站点）
-        const tempStationUuid = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        
         const addStationData: AddRouteStationDTO = {
             route_uuid: routeUuid,
-            station_uuid: tempStationUuid,
-            sequence: formData.sequence,
-            distance_from_start: formData.distance_from_start,
-            estimated_time: formData.estimated_time
+            station_uuid: formData.station_uuid,
+            sequence: Number(formData.sequence),
+            distance_from_start: Number(formData.distance_from_start),
+            estimated_time: Number(formData.estimated_time)
         };
 
         onConfirm(addStationData);
     };
 
     return (
-        <div className="modal modal-open">
-            <div className="modal-box w-11/12 max-w-3xl">
+        <div className="modal modal-open" style={{ zIndex: 60 }}>
+            <div className="modal-box w-11/12 max-w-4xl">
                 {/* 头部 */}
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h3 className="text-xl font-bold">添加站点到线路</h3>
+                        <h3 className="text-xl font-bold">关联站点到线路</h3>
                         <p className="text-sm text-base-content/60 mt-1">线路: {routeName}</p>
                     </div>
                     <button className="btn btn-sm btn-circle btn-ghost" onClick={onCancel}>✕</button>
@@ -108,79 +133,59 @@ export function RouteAddStationModal({
 
                 {/* 表单内容 */}
                 <div className="space-y-6">
-                    {/* 站点基本信息 */}
+                    {/* 选择站点 */}
                     <div>
                         <h4 className="text-lg font-semibold mb-4 flex items-center">
-                            <span className="mr-2">🚏</span>站点信息
+                            <span className="mr-2">🚏</span>选择站点
                         </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        {loadingStations ? (
+                            <div className="flex items-center justify-center py-8">
+                                <span className="loading loading-spinner loading-md"></span>
+                                <span className="ml-2">正在加载站点列表...</span>
+                            </div>
+                        ) : stations.length === 0 ? (
+                            <div className="text-center py-8">
+                                <div className="text-4xl mb-2">🚫</div>
+                                <p className="text-base-content/60">暂无可用站点</p>
+                                <p className="text-sm text-base-content/40 mt-1">所有站点都已添加到该线路</p>
+                            </div>
+                        ) : (
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium border-l-4 border-error pl-3">站点名称</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">选择站点</span>
                                 </label>
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-full"
-                                    value={stationInfo.name}
-                                    onChange={(e) => handleStationInfoChange('name', e.target.value)}
-                                    placeholder="请输入站点名称，如：市政府站"
-                                />
+                                <select
+                                    className="select select-bordered w-full"
+                                    value={formData.station_uuid}
+                                    onChange={(e) => handleStationSelect(e.target.value)}
+                                >
+                                    <option value="">请选择要添加的站点</option>
+                                    {stations.map((station) => (
+                                        <option key={station.station_uuid} value={station.station_uuid}>
+                                            {station.name} ({station.code})
+                                        </option>
+                                    ))}
+                                </select>
+                                
+                                {/* 选中站点预览 */}
+                                {selectedStation && (
+                                    <div className="mt-3 p-3 bg-base-200 rounded-lg">
+                                        <h5 className="font-semibold text-sm mb-2">选中站点预览</h5>
+                                        <div className="grid grid-cols-2 gap-2 text-sm">
+                                            <div>
+                                                <span className="text-base-content/70">站点名称：</span>
+                                                <span className="font-medium">{selectedStation.name}</span>
+                                            </div>
+                                            <div>
+                                                <span className="text-base-content/70">站点编码：</span>
+                                                <span className="font-medium">{selectedStation.code}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-
-                            <div>
-                                <label className="label mb-0.5">
-                                    <span className="label-text font-medium">站点编码</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-full"
-                                    value={stationInfo.code}
-                                    onChange={(e) => handleStationInfoChange('code', e.target.value)}
-                                    placeholder="如：S001"
-                                />
-                            </div>
-
-                            <div className="md:col-span-2">
-                                <label className="label mb-0.5">
-                                    <span className="label-text font-medium">站点地址</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-full"
-                                    value={stationInfo.address}
-                                    onChange={(e) => handleStationInfoChange('address', e.target.value)}
-                                    placeholder="请输入站点地址"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="label mb-0.5">
-                                    <span className="label-text font-medium">经度</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    step="0.000001"
-                                    className="input input-bordered w-full"
-                                    value={stationInfo.longitude || ''}
-                                    onChange={(e) => handleStationInfoChange('longitude', parseFloat(e.target.value) || 0)}
-                                    placeholder="116.397128"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="label mb-0.5">
-                                    <span className="label-text font-medium">纬度</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    step="0.000001"
-                                    className="input input-bordered w-full"
-                                    value={stationInfo.latitude || ''}
-                                    onChange={(e) => handleStationInfoChange('latitude', parseFloat(e.target.value) || 0)}
-                                    placeholder="39.916527"
-                                />
-                            </div>
-                        </div>
+                        )}
                     </div>
 
                     {/* 线路位置信息 */}
@@ -209,7 +214,7 @@ export function RouteAddStationModal({
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium border-l-4 border-error pl-3">距起点距离 (km)</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">距上一站距离 (km)</span>
                                 </label>
                                 <input
                                     type="number"
@@ -222,14 +227,14 @@ export function RouteAddStationModal({
                                 />
                                 <label className="label">
                                     <span className="label-text-alt text-base-content/60">
-                                        从线路起点到此站点的距离
+                                        从上一站点到此站点的距离，首站填0
                                     </span>
                                 </label>
                             </div>
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium border-l-4 border-error pl-3">预计到达时间 (分钟)</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">从上一站用时 (分钟)</span>
                                 </label>
                                 <input
                                     type="number"
@@ -241,7 +246,7 @@ export function RouteAddStationModal({
                                 />
                                 <label className="label">
                                     <span className="label-text-alt text-base-content/60">
-                                        从起点到此站点的预计时间
+                                        从上一站点到此站点的预计用时，首站填0
                                     </span>
                                 </label>
                             </div>
@@ -278,8 +283,12 @@ export function RouteAddStationModal({
                     <button className="btn btn-ghost" onClick={onCancel}>
                         取消
                     </button>
-                    <button className="btn btn-primary" onClick={handleSubmit}>
-                        添加站点
+                    <button 
+                        className="btn btn-primary" 
+                        onClick={handleSubmit}
+                        disabled={!formData.station_uuid || loadingStations}
+                    >
+                        关联站点
                     </button>
                 </div>
             </div>

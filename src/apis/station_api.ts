@@ -4,11 +4,13 @@ import type {
     UpdateStationDTO, 
     GetStationListQueryDTO, 
     GetStationDetailQueryDTO, 
-    DeleteStationQueryDTO
+    DeleteStationQueryDTO,
+    GetStationSimpleListQueryDTO
 } from "../models/dto/station_dto";
 import type { 
     StationDetailEntity, 
-    PagedStationListEntity
+    PagedStationListEntity,
+    StationSimpleListEntity
 } from "../models/entity/station_entity";
 import type { BaseResponse } from "../models/base_response";
 
@@ -113,10 +115,31 @@ const GetStationListAPI = async (params?: GetStationListQueryDTO): Promise<BaseR
     );
 }
 
+/**
+ * # GetStationSimpleListAPI
+ * > 该函数用于获取站点简单列表信息，适用于下拉框选择等场景，通过向指定的后端接口发送查询参数。
+ * > 注意：此接口需要用户已登录状态，会自动添加授权头信息。
+ *
+ * @param params - {GetStationSimpleListQueryDTO} 包含筛选参数的查询对象，如状态筛选等。
+ * @returns {Promise<BaseResponse<StationSimpleListEntity> | undefined>} - 返回一个 Promise 对象，解析为包含站点简单列表的 BaseResponse 类型或者 undefined。
+ * @throws 当网络请求失败、服务器响应异常、用户未登录或传入参数不符合要求时，可能会抛出错误。
+ */
+const GetStationSimpleListAPI = async (params?: GetStationSimpleListQueryDTO): Promise<BaseResponse<StationSimpleListEntity> | undefined> => {
+    return BaseApi<BaseResponse<StationSimpleListEntity>>(
+        MethodType.GET,
+        "/api/v1/stations/simple",
+        null,
+        params || {},
+        null,
+        { "Authorization": `Bearer ${GetAuthorizationToken()}` }
+    );
+}
+
 export {
     CreateStationAPI,
     UpdateStationAPI,
     DeleteStationAPI,
     GetStationDetailAPI,
-    GetStationListAPI
+    GetStationListAPI,
+    GetStationSimpleListAPI
 }; 

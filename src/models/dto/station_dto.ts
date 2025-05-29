@@ -82,4 +82,12 @@ export interface GetStationListQueryDTO extends Record<string, unknown> {
     page?: number;
     /** 每页数量，默认为10 */
     size?: number;
+}
+
+/**
+ * # 获取简单站点列表查询参数
+ */
+export interface GetStationSimpleListQueryDTO extends Record<string, unknown> {
+    /** 状态: 0-停用, 1-启用，默认为1（启用） */
+    status?: number;
 } 

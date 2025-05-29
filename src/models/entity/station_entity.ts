@@ -70,4 +70,24 @@ export interface PagedStationListEntity {
     size: number;
     /** 站点列表 */
     stations: StationListItemEntity[];
+}
+
+/**
+ * # 简单站点实体
+ */
+export interface StationSimpleEntity {
+    /** 站点UUID */
+    station_uuid: string;
+    /** 站点名称 */
+    name: string;
+    /** 站点编码 */
+    code: string;
+}
+
+/**
+ * # 简单站点列表实体
+ */
+export interface StationSimpleListEntity {
+    /** 站点列表 */
+    stations: StationSimpleEntity[];
 } 

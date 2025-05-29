@@ -36,14 +36,18 @@ export function RouteStationsModal({
     };
 
     const stations = routeStations.stations.sort((a, b) => a.sequence - b.sequence);
-    const totalDistance = stations.length > 0 ? Math.max(...stations.map(s => s.distance_from_start)) : 0;
-    const totalTime = stations.length > 0 ? Math.max(...stations.map(s => s.estimated_time)) : 0;
+    
+    // 计算总距离：所有站点的distance_from_start之和
+    const totalDistance = stations.reduce((sum, station) => sum + station.distance_from_start, 0);
+    
+    // 计算总用时：所有站点的estimated_time之和
+    const totalTime = stations.reduce((sum, station) => sum + station.estimated_time, 0);
 
     return (
-        <div className="modal modal-open">
+        <div className="modal modal-open" style={{ zIndex: 50 }}>
             <div className="modal-box w-11/12 max-w-6xl max-h-[90vh] overflow-y-auto">
                 {/* 头部 */}
-                <div className="flex items-center justify-between mb-6 sticky top-0 bg-base-100 pt-4">
+                <div className="flex items-center justify-between mb-6 sticky top-0 bg-base-100/95 backdrop-blur-sm border-b border-base-300/50 pt-4 pb-2 z-10">
                     <div>
                         <h3 className="text-xl font-bold">线路站点信息</h3>
                         <div className="flex items-center space-x-3 mt-2">
@@ -86,7 +90,7 @@ export function RouteStationsModal({
 
                 {/* 空状态 */}
                 {stations.length === 0 ? (
-                    <div className="text-center py-12">
+                    <div className="text-center py-12 px-4">
                         <div className="text-6xl mb-4">🚏</div>
                         <h4 className="text-lg font-semibold mb-2">该线路暂无站点信息</h4>
                         <p className="text-base-content/60 mb-4">请添加站点以完善线路信息</p>
@@ -100,7 +104,7 @@ export function RouteStationsModal({
                         )}
                     </div>
                 ) : (
-                    <>
+                    <div className="px-4 pb-4">
                         {/* 站点列表 */}
                         <div className="space-y-3">
                             {stations.map((station, index) => (
@@ -119,10 +123,10 @@ export function RouteStationsModal({
                                             
                                             <div className="flex items-center gap-2">
                                                 <div className="badge badge-outline">
-                                                    {formatDistance(station.distance_from_start)}
+                                                    {index === 0 ? '起点站' : `距上一站 ${formatDistance(station.distance_from_start)}`}
                                                 </div>
                                                 <div className="badge badge-info badge-outline">
-                                                    {formatTime(station.estimated_time)}
+                                                    {index === 0 ? '起点' : `用时 ${formatTime(station.estimated_time)}`}
                                                 </div>
                                                 
                                                 {/* 站点操作按钮 */}
@@ -211,11 +215,11 @@ export function RouteStationsModal({
                                 <div className="stat-desc">预计行程时间</div>
                             </div>
                         </div>
-                    </>
+                    </div>
                 )}
 
                 {/* 底部按钮 */}
-                <div className="modal-action sticky bottom-0 bg-base-100 pt-4">
+                <div className="modal-action sticky bottom-0 bg-base-100/95 backdrop-blur-sm border-t border-base-300/50 pt-4 pb-2 z-10">
                     <button className="btn btn-primary" onClick={onClose}>
                         关闭
                     </button>

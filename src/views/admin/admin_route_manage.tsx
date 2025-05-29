@@ -7,18 +7,21 @@ import {
     GetRouteListAPI,
     GetRouteStationsAPI,
     AddRouteStationAPI,
+    UpdateRouteStationAPI,
     DeleteRouteStationAPI
 } from '../../apis/route_api';
 import type { 
     CreateRouteDTO, 
     UpdateRouteDTO, 
     GetRouteListQueryDTO,
-    AddRouteStationDTO
+    AddRouteStationDTO,
+    UpdateRouteStationDTO
 } from '../../models/dto/route_dto';
 import type { 
     RouteDetailEntity, 
     RouteListItemEntity,
-    RouteStationsEntity
+    RouteStationsEntity,
+    RouteStationItemEntity
 } from '../../models/entity/route_entity';
 
 // 导入组件
@@ -29,6 +32,7 @@ import { RouteEditModal } from '../../components/admin/route/route_edit_modal';
 import { RouteDetailModal } from '../../components/admin/route/route_detail_modal';
 import { RouteStationsModal } from '../../components/admin/route/route_stations_modal';
 import { RouteAddStationModal } from '../../components/admin/route/route_add_station_modal';
+import { RouteEditStationModal } from '../../components/admin/route/route_edit_station_modal';
 
 /**
  * # 线路管理页面
@@ -49,10 +53,12 @@ export function AdminRouteManage() {
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [showStationsModal, setShowStationsModal] = useState(false);
     const [showAddStationModal, setShowAddStationModal] = useState(false);
+    const [showEditStationModal, setShowEditStationModal] = useState(false);
     
     // 当前操作的线路
     const [currentRoute, setCurrentRoute] = useState<RouteDetailEntity | null>(null);
     const [currentRouteStations, setCurrentRouteStations] = useState<RouteStationsEntity | null>(null);
+    const [currentEditStation, setCurrentEditStation] = useState<RouteStationItemEntity | null>(null);
     
     // 表单数据
     const [formData, setFormData] = useState<CreateRouteDTO>({
@@ -295,11 +301,48 @@ export function AdminRouteManage() {
     };
 
     /**
-     * 编辑站点（暂未实现）
+     * 编辑站点
      */
     const handleEditStation = (routeStationUuid: string) => {
-        alert('编辑站点功能正在开发中...');
-        console.log('编辑站点:', routeStationUuid);
+        if (!currentRouteStations) return;
+        
+        const stationToEdit = currentRouteStations.stations.find(
+            station => station.route_station_uuid === routeStationUuid
+        );
+        
+        if (stationToEdit) {
+            setCurrentEditStation(stationToEdit);
+            setShowEditStationModal(true);
+        } else {
+            alert('找不到要编辑的站点信息');
+        }
+    };
+
+    /**
+     * 确认编辑站点
+     */
+    const handleConfirmEditStation = async (stationData: UpdateRouteStationDTO) => {
+        try {
+            console.log('✏️ 编辑线路站点 - 数据:', stationData);
+            const response = await UpdateRouteStationAPI(stationData.route_station_uuid, stationData);
+            console.log('📡 编辑站点响应:', response);
+            
+            if (response?.code === 200) {
+                setShowEditStationModal(false);
+                setCurrentEditStation(null);
+                alert('站点信息更新成功！');
+                
+                // 刷新站点列表
+                if (currentRouteStations) {
+                    handleRefreshStations();
+                }
+            } else {
+                alert(`更新站点失败: ${response?.message}`);
+            }
+        } catch (error) {
+            console.error('💥 编辑站点异常:', error);
+            alert('更新站点失败，请稍后重试。详情请查看控制台');
+        }
     };
 
     /**
@@ -509,10 +552,29 @@ export function AdminRouteManage() {
                     routeName={`线路 ${currentRouteStations.route_uuid.substring(0, 8)}...`}
                     existingStations={currentRouteStations.stations.map(station => ({
                         sequence: station.sequence,
-                        name: station.name
+                        name: station.name,
+                        station_uuid: station.station_uuid
                     }))}
                     onConfirm={handleConfirmAddStation}
                     onCancel={() => setShowAddStationModal(false)}
+                />
+            )}
+
+            {/* 编辑站点模态框 */}
+            {showEditStationModal && currentEditStation && currentRouteStations && (
+                <RouteEditStationModal
+                    station={currentEditStation}
+                    existingStations={currentRouteStations.stations.map(station => ({
+                        sequence: station.sequence,
+                        name: station.name,
+                        station_uuid: station.station_uuid,
+                        route_station_uuid: station.route_station_uuid
+                    }))}
+                    onConfirm={handleConfirmEditStation}
+                    onCancel={() => {
+                        setShowEditStationModal(false);
+                        setCurrentEditStation(null);
+                    }}
                 />
             )}
         </div>
