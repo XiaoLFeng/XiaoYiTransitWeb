@@ -50,9 +50,9 @@ export function AdminVehicleInspectionManage() {
     const [formData, setFormData] = useState<CreateVehicleInspectionDTO>({
         vehicle_uuid: '',
         inspection_date: '',
-        result: '合格',
-        agency: '',
-        next_inspection_date: '',
+        inspection_result: 1,
+        inspection_agency: '',
+        expiry_date: '',
         cost: 0,
         notes: ''
     });
@@ -186,9 +186,9 @@ export function AdminVehicleInspectionManage() {
             vehicle_uuid: inspection.vehicle_uuid,
             plate_number: inspection.plate_number,
             inspection_date: inspection.inspection_date,
-            result: inspection.result,
-            agency: inspection.agency,
-            next_inspection_date: inspection.next_inspection_date,
+            inspection_result: inspection.inspection_result,
+            inspection_agency: inspection.inspection_agency,
+            expiry_date: inspection.expiry_date,
             cost: inspection.cost
         };
         setCurrentInspection(inspectionDetail);
@@ -205,9 +205,9 @@ export function AdminVehicleInspectionManage() {
             vehicle_uuid: inspection.vehicle_uuid,
             plate_number: inspection.plate_number,
             inspection_date: inspection.inspection_date,
-            result: inspection.result,
-            agency: inspection.agency,
-            next_inspection_date: inspection.next_inspection_date,
+            inspection_result: inspection.inspection_result,
+            inspection_agency: inspection.inspection_agency,
+            expiry_date: inspection.expiry_date,
             cost: inspection.cost
         };
         
@@ -217,9 +217,9 @@ export function AdminVehicleInspectionManage() {
         const formDataToSet = {
             vehicle_uuid: inspection.vehicle_uuid || '',
             inspection_date: inspection.inspection_date || '',
-            result: inspection.result || '合格',
-            agency: inspection.agency || '',
-            next_inspection_date: inspection.next_inspection_date || '',
+            inspection_result: inspection.inspection_result || 1,
+            inspection_agency: inspection.inspection_agency || '',
+            expiry_date: inspection.expiry_date || '',
             cost: inspection.cost ?? 0,
             notes: ''
         };
@@ -236,9 +236,9 @@ export function AdminVehicleInspectionManage() {
         setFormData({
             vehicle_uuid: '',
             inspection_date: '',
-            result: '合格',
-            agency: '',
-            next_inspection_date: '',
+            inspection_result: 1,
+            inspection_agency: '',
+            expiry_date: '',
             cost: 0,
             notes: ''
         });

@@ -205,24 +205,24 @@ export function DriverEditModal({ formData, setFormData, onConfirm, onCancel }: 
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium">驾驶证到期日期</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">驾驶证到期日期</span>
                                 </label>
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.license_expiry_date}
+                                    value={formData.license_expiry_date?.split(' ')[0]}
                                     onChange={(e) => handleInputChange('license_expiry_date', e.target.value)}
                                 />
                             </div>
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium">入职日期</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">入职日期</span>
                                 </label>
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.entry_date}
+                                    value={formData.entry_date?.split(' ')[0]}
                                     onChange={(e) => handleInputChange('entry_date', e.target.value)}
                                 />
                             </div>

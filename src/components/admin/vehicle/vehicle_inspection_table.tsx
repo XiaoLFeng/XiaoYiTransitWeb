@@ -17,9 +17,8 @@ interface VehicleInspectionTableProps {
  * # 年检结果状态选项
  */
 const INSPECTION_RESULT_OPTIONS = [
-    { value: '合格', label: '合格', color: 'badge-success' },
-    { value: '不合格', label: '不合格', color: 'badge-error' },
-    { value: '待检', label: '待检', color: 'badge-warning' },
+    { value: 1, label: '合格', color: 'badge-success' },
+    { value: 2, label: '不合格', color: 'badge-error' },
 ];
 
 /**
@@ -56,7 +55,7 @@ export function VehicleInspectionTable({
     /**
      * 获取年检结果显示
      */
-    const getResultDisplay = (result: string) => {
+    const getResultDisplay = (result: number) => {
         const option = INSPECTION_RESULT_OPTIONS.find(opt => opt.value === result);
         return option ? { label: option.label, color: option.color } : { label: result, color: 'badge-neutral' };
     };
@@ -115,9 +114,9 @@ export function VehicleInspectionTable({
                                 <tbody>
                                     {inspections.length > 0 ? (
                                         inspections.map((inspection) => {
-                                            const resultDisplay = getResultDisplay(inspection.result);
-                                            const inspectionDue = isInspectionDue(inspection.next_inspection_date);
-                                            const inspectionOverdue = isInspectionOverdue(inspection.next_inspection_date);
+                                            const resultDisplay = getResultDisplay(inspection.inspection_result);
+                                            const inspectionDue = isInspectionDue(inspection.expiry_date);
+                                            const inspectionOverdue = isInspectionOverdue(inspection.expiry_date);
                                             
                                             return (
                                                 <tr key={inspection.inspection_uuid}>
@@ -128,11 +127,11 @@ export function VehicleInspectionTable({
                                                             {resultDisplay.label}
                                                         </span>
                                                     </td>
-                                                    <td>{inspection.agency}</td>
+                                                    <td>{inspection.inspection_agency}</td>
                                                     <td>
                                                         <div className="flex items-center space-x-2">
                                                             <span className={inspectionOverdue ? 'text-error' : inspectionDue ? 'text-warning' : ''}>
-                                                                {formatDate(inspection.next_inspection_date)}
+                                                                {formatDate(inspection.expiry_date)}
                                                             </span>
                                                             {inspectionOverdue && <span className="badge badge-error badge-xs">已超期</span>}
                                                             {!inspectionOverdue && inspectionDue && <span className="badge badge-warning badge-xs">即将到期</span>}

@@ -9,9 +9,8 @@ interface VehicleInspectionDetailModalProps {
  * # 年检结果状态选项
  */
 const INSPECTION_RESULT_OPTIONS = [
-    { value: '合格', label: '合格', color: 'badge-success' },
-    { value: '不合格', label: '不合格', color: 'badge-error' },
-    { value: '待检', label: '待检', color: 'badge-warning' },
+    { value: 1, label: '合格', color: 'badge-success' },
+    { value: 2, label: '不合格', color: 'badge-error' },
 ];
 
 /**
@@ -31,7 +30,7 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
     /**
      * 获取年检结果显示
      */
-    const getResultDisplay = (result: string) => {
+    const getResultDisplay = (result: number) => {
         const option = INSPECTION_RESULT_OPTIONS.find(opt => opt.value === result);
         return option ? { label: option.label, color: option.color } : { label: result, color: 'badge-neutral' };
     };
@@ -57,9 +56,9 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
         return next.getTime() < now.getTime();
     };
 
-    const resultDisplay = getResultDisplay(inspection.result);
-    const inspectionDue = isInspectionDue(inspection.next_inspection_date);
-    const inspectionOverdue = isInspectionOverdue(inspection.next_inspection_date);
+    const resultDisplay = getResultDisplay(inspection.inspection_result);
+    const inspectionDue = isInspectionDue(inspection.expiry_date);
+    const inspectionOverdue = isInspectionOverdue(inspection.expiry_date);
 
     return (
         <div className="modal modal-open">
@@ -102,7 +101,7 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">检测机构</span>
-                                <span>{inspection.agency}</span>
+                                <span>{inspection.inspection_agency}</span>
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">年检费用</span>
@@ -112,7 +111,7 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
                                 <span className="font-medium">下次年检</span>
                                 <div className="flex items-center space-x-2">
                                     <span className={inspectionOverdue ? 'text-error' : inspectionDue ? 'text-warning' : ''}>
-                                        {formatDate(inspection.next_inspection_date)}
+                                        {formatDate(inspection.expiry_date)}
                                     </span>
                                     {inspectionOverdue && <span className="badge badge-error badge-xs">已超期</span>}
                                     {!inspectionOverdue && inspectionDue && <span className="badge badge-warning badge-xs">即将到期</span>}
@@ -130,18 +129,18 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
                             <div className="stat bg-base-200 rounded-lg p-4">
                                 <div className="stat-title">年检周期</div>
                                 <div className="stat-value text-sm">
-                                    {formatDate(inspection.inspection_date)} 至 {formatDate(inspection.next_inspection_date)}
+                                    {formatDate(inspection.inspection_date)} 至 {formatDate(inspection.expiry_date)}
                                 </div>
                                 <div className="stat-desc">
-                                    {inspection.result === '合格' ? '本次年检合格' : inspection.result === '不合格' ? '本次年检不合格' : '待检'}
+                                    {inspection.inspection_result === 1 ? '本次年检合格' : inspection.inspection_result === 2 ? '本次年检不合格' : '待检'}
                                 </div>
                             </div>
                             
                             <div className="stat bg-base-200 rounded-lg p-4">
                                 <div className="stat-title">距下次年检</div>
                                 <div className={`stat-value text-2xl ${inspectionOverdue ? 'text-error' : inspectionDue ? 'text-warning' : 'text-success'}`}>
-                                    {inspection.next_inspection_date ? 
-                                        Math.max(0, Math.ceil((new Date(inspection.next_inspection_date).getTime() - new Date().getTime()) / (1000 * 3600 * 24))) 
+                                    {inspection.expiry_date ? 
+                                        Math.max(0, Math.ceil((new Date(inspection.expiry_date).getTime() - new Date().getTime()) / (1000 * 3600 * 24))) 
                                         : '-'
                                     } 天
                                 </div>
@@ -171,7 +170,7 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
                         </div>
                         <div className="timeline-end timeline-box">
                             <div className="font-bold">{formatDate(inspection.inspection_date)}</div>
-                            <div className="text-sm opacity-60">{inspection.agency}</div>
+                            <div className="text-sm opacity-60">{inspection.inspection_agency}</div>
                             <div className={`badge ${resultDisplay.color} badge-sm mt-1`}>
                                 {resultDisplay.label}
                             </div>
@@ -182,7 +181,7 @@ export function VehicleInspectionDetailModal({ inspection, onClose }: VehicleIns
                             <div className={`w-4 h-4 rounded-full ${inspectionOverdue ? 'bg-error' : inspectionDue ? 'bg-warning' : 'bg-success'}`}></div>
                         </div>
                         <div className="timeline-end timeline-box">
-                            <div className="font-bold">{formatDate(inspection.next_inspection_date)}</div>
+                            <div className="font-bold">{formatDate(inspection.expiry_date)}</div>
                             <div className={`text-sm ${inspectionOverdue ? 'text-error' : inspectionDue ? 'text-warning' : 'text-success'}`}>
                                 {inspectionOverdue ? '已超期' : inspectionDue ? '即将到期' : '正常'}
                             </div>

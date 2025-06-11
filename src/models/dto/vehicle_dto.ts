@@ -96,11 +96,11 @@ export interface CreateVehicleInspectionDTO extends Record<string, unknown> {
     /** 年检日期 */
     inspection_date: string;
     /** 年检结果 */
-    result: string;
+    inspection_result: number;
     /** 年检机构 */
-    agency?: string;
+    inspection_agency?: string;
     /** 下次年检日期 */
-    next_inspection_date?: string;
+    expiry_date?: string;
     /** 费用 */
     cost?: number;
     /** 备注 */

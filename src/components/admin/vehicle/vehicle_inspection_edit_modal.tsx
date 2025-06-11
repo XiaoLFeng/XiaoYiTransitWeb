@@ -13,9 +13,8 @@ interface VehicleInspectionEditModalProps {
  * # 年检结果选项
  */
 const INSPECTION_RESULT_OPTIONS = [
-    '合格',
-    '不合格',
-    '待检'
+    [1, '合格'],
+    [2, '不合格']
 ];
 
 /**
@@ -71,7 +70,7 @@ export function VehicleInspectionEditModal({ formData, setFormData, vehicles, on
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.inspection_date}
+                                    value={formData.inspection_date?.split(' ')[0]}
                                     onChange={(e) => handleInputChange('inspection_date', e.target.value)}
                                 />
                             </div>
@@ -82,12 +81,12 @@ export function VehicleInspectionEditModal({ formData, setFormData, vehicles, on
                                 </label>
                                 <select
                                     className="select select-bordered w-full"
-                                    value={formData.result}
-                                    onChange={(e) => handleInputChange('result', e.target.value)}
+                                    value={formData.inspection_result}
+                                    onChange={(e) => handleInputChange('inspection_result', e.target.value)}
                                 >
                                     {INSPECTION_RESULT_OPTIONS.map(result => (
-                                        <option key={result} value={result}>
-                                            {result}
+                                        <option key={result[0]} value={result[0]}>
+                                            {result[1]}
                                         </option>
                                     ))}
                                 </select>
@@ -100,8 +99,8 @@ export function VehicleInspectionEditModal({ formData, setFormData, vehicles, on
                                 <input
                                     type="text"
                                     className="input input-bordered w-full"
-                                    value={formData.agency}
-                                    onChange={(e) => handleInputChange('agency', e.target.value)}
+                                    value={formData.inspection_agency}
+                                    onChange={(e) => handleInputChange('inspection_agency', e.target.value)}
                                     placeholder="请输入检测机构"
                                 />
                             </div>
@@ -121,8 +120,8 @@ export function VehicleInspectionEditModal({ formData, setFormData, vehicles, on
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.next_inspection_date}
-                                    onChange={(e) => handleInputChange('next_inspection_date', e.target.value)}
+                                    value={formData.expiry_date?.split(' ')[0]}
+                                    onChange={(e) => handleInputChange('expiry_date', e.target.value)}
                                 />
                             </div>
 
