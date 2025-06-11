@@ -16,7 +16,7 @@ export interface VehicleDetailEntity {
     /** 制造年份 */
     manufacture_year?: number;
     /** 座位数 */
-    seat_count?: number;
+    seats?: number;
     /** 发动机号 */
     engine_number?: string;
     /** 车架号 */
@@ -51,7 +51,7 @@ export interface VehicleListItemEntity {
     /** 制造年份 */
     manufacture_year?: number;
     /** 座位数 */
-    seat_count?: number;
+    seats?: number;
     /** 状态: 1-运营, 2-维修, 3-停运, 4-报废 */
     status: VehicleStatus;
     /** 购置日期 */
@@ -154,13 +154,13 @@ export interface VehicleInsuranceDetailEntity {
     /** 保险类型 */
     insurance_type: string;
     /** 保险公司 */
-    insurance_company?: string;
+    insurer?: string;
     /** 保单号 */
     policy_number?: string;
     /** 保险开始日期 */
     start_date: string;
     /** 保险结束日期 */
-    end_date: string;
+    expiry_date: string;
     /** 保险费用 */
     premium?: number;
     /** 保险金额 */
@@ -187,13 +187,13 @@ export interface VehicleInsuranceListItemEntity {
     /** 保险类型 */
     insurance_type: string;
     /** 保险公司 */
-    insurance_company?: string;
+    insurer?: string;
     /** 保单号 */
     policy_number?: string;
     /** 保险开始日期 */
     start_date: string;
     /** 保险结束日期 */
-    end_date: string;
+    expiry_date: string;
     /** 保险费用 */
     premium?: number;
     /** 保险金额 */

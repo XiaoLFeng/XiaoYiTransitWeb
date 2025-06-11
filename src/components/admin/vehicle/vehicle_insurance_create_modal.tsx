@@ -94,8 +94,8 @@ export function VehicleInsuranceCreateModal({ formData, setFormData, vehicles, o
                                 <input
                                     type="text"
                                     className="input input-bordered w-full"
-                                    value={formData.insurance_company}
-                                    onChange={(e) => handleInputChange('insurance_company', e.target.value)}
+                                    value={formData.insurer}
+                                    onChange={(e) => handleInputChange('insurer', e.target.value)}
                                     placeholder="请输入保险公司"
                                 />
                             </div>
@@ -140,8 +140,8 @@ export function VehicleInsuranceCreateModal({ formData, setFormData, vehicles, o
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.end_date}
-                                    onChange={(e) => handleInputChange('end_date', e.target.value)}
+                                    value={formData.expiry_date}
+                                    onChange={(e) => handleInputChange('expiry_date', e.target.value)}
                                 />
                             </div>
 

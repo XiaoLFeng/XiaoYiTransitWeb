@@ -74,19 +74,6 @@ export function VehicleEditModal({ formData, setFormData, onConfirm, onCancel }:
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium">制造商</span>
-                                </label>
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-full"
-                                    value={formData.manufacturer}
-                                    onChange={(e) => handleInputChange('manufacturer', e.target.value)}
-                                    placeholder="请输入制造商"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="label mb-0.5">
                                     <span className="label-text font-medium">制造年份</span>
                                 </label>
                                 <input
@@ -107,8 +94,8 @@ export function VehicleEditModal({ formData, setFormData, onConfirm, onCancel }:
                                 <input
                                     type="number"
                                     className="input input-bordered w-full"
-                                    value={formData.seat_count}
-                                    onChange={(e) => handleInputChange('seat_count', Number(e.target.value))}
+                                    value={formData.seats}
+                                    onChange={(e) => handleInputChange('seats', Number(e.target.value))}
                                     placeholder="请输入座位数"
                                     min="1"
                                     max="200"
@@ -168,12 +155,12 @@ export function VehicleEditModal({ formData, setFormData, onConfirm, onCancel }:
 
                             <div>
                                 <label className="label mb-0.5">
-                                    <span className="label-text font-medium">购置日期</span>
+                                    <span className="label-text font-medium border-l-4 border-error pl-3">购置日期</span>
                                 </label>
                                 <input
                                     type="date"
                                     className="input input-bordered w-full"
-                                    value={formData.purchase_date}
+                                    value={formData.purchase_date?.split(' ')[0]}
                                     onChange={(e) => handleInputChange('purchase_date', e.target.value)}
                                 />
                             </div>

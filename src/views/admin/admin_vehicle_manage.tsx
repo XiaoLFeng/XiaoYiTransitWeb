@@ -51,7 +51,7 @@ export function AdminVehicleManage() {
         model: '',
         manufacturer: '',
         manufacture_year: new Date().getFullYear(),
-        seat_count: 40, // 默认公交车座位数
+        seats: 40, // 默认公交车座位数
         engine_number: '',
         chassis_number: '',
         purchase_date: '',
@@ -213,7 +213,7 @@ export function AdminVehicleManage() {
                         model: vehicleDetail.model || '',
                         manufacturer: vehicleDetail.manufacturer || '',
                         manufacture_year: vehicleDetail.manufacture_year ?? new Date().getFullYear(),
-                        seat_count: vehicleDetail.seat_count ?? 40,
+                        seats: vehicleDetail.seats ?? 40,
                         engine_number: vehicleDetail.engine_number || '',
                         chassis_number: vehicleDetail.chassis_number || '',
                         purchase_date: vehicleDetail.purchase_date || '',
@@ -248,7 +248,7 @@ export function AdminVehicleManage() {
             model: '',
             manufacturer: '',
             manufacture_year: new Date().getFullYear(),
-            seat_count: 40, // 默认公交车座位数
+            seats: 40, // 默认公交车座位数
             engine_number: '',
             chassis_number: '',
             purchase_date: '',

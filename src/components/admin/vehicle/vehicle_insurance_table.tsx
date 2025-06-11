@@ -100,8 +100,8 @@ export function VehicleInsuranceTable({
                                 <tbody>
                                     {insurances.length > 0 ? (
                                         insurances.map((insurance) => {
-                                            const expiringSoon = isExpiringSoon(insurance.end_date);
-                                            const expired = isExpired(insurance.end_date);
+                                            const expiringSoon = isExpiringSoon(insurance.expiry_date);
+                                            const expired = isExpired(insurance.expiry_date);
                                             
                                             return (
                                                 <tr key={insurance.insurance_uuid}>
@@ -109,13 +109,13 @@ export function VehicleInsuranceTable({
                                                     <td>
                                                         <span className="badge badge-outline">{insurance.insurance_type}</span>
                                                     </td>
-                                                    <td>{insurance.insurance_company}</td>
+                                                    <td>{insurance.insurer}</td>
                                                     <td className="font-mono text-sm">{insurance.policy_number}</td>
                                                     <td>{formatDate(insurance.start_date)}</td>
                                                     <td>
                                                         <div className="flex items-center space-x-2">
                                                             <span className={expired ? 'text-error' : expiringSoon ? 'text-warning' : ''}>
-                                                                {formatDate(insurance.end_date)}
+                                                                {formatDate(insurance.expiry_date)}
                                                             </span>
                                                             {expired && <span className="badge badge-error badge-xs">已过期</span>}
                                                             {!expired && expiringSoon && <span className="badge badge-warning badge-xs">即将到期</span>}

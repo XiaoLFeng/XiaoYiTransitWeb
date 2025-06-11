@@ -50,10 +50,10 @@ export function AdminVehicleInsuranceManage() {
     const [formData, setFormData] = useState<CreateVehicleInsuranceDTO>({
         vehicle_uuid: '',
         insurance_type: '交强险',
-        insurance_company: '',
+        insurer: '',
         policy_number: '',
         start_date: '',
-        end_date: '',
+        expiry_date: '',
         premium: 0,
         coverage_amount: 0,
         notes: ''
@@ -188,10 +188,10 @@ export function AdminVehicleInsuranceManage() {
             vehicle_uuid: insurance.vehicle_uuid,
             plate_number: insurance.plate_number,
             insurance_type: insurance.insurance_type,
-            insurance_company: insurance.insurance_company,
+            insurer: insurance.insurer,
             policy_number: insurance.policy_number,
             start_date: insurance.start_date,
-            end_date: insurance.end_date,
+            expiry_date: insurance.expiry_date,
             premium: insurance.premium,
             coverage_amount: insurance.coverage_amount
         };
@@ -209,10 +209,10 @@ export function AdminVehicleInsuranceManage() {
             vehicle_uuid: insurance.vehicle_uuid,
             plate_number: insurance.plate_number,
             insurance_type: insurance.insurance_type,
-            insurance_company: insurance.insurance_company,
+            insurer: insurance.insurer,
             policy_number: insurance.policy_number,
             start_date: insurance.start_date,
-            end_date: insurance.end_date,
+            expiry_date: insurance.expiry_date,
             premium: insurance.premium,
             coverage_amount: insurance.coverage_amount
         };
@@ -223,10 +223,10 @@ export function AdminVehicleInsuranceManage() {
         const formDataToSet = {
             vehicle_uuid: insurance.vehicle_uuid || '',
             insurance_type: insurance.insurance_type || '',
-            insurance_company: insurance.insurance_company || '',
+            insurer: insurance.insurer || '',
             policy_number: insurance.policy_number || '',
             start_date: insurance.start_date || '',
-            end_date: insurance.end_date || '',
+            expiry_date: insurance.expiry_date || '',
             premium: insurance.premium ?? 0,
             coverage_amount: insurance.coverage_amount ?? 0,
             notes: ''
@@ -244,10 +244,10 @@ export function AdminVehicleInsuranceManage() {
         setFormData({
             vehicle_uuid: '',
             insurance_type: '交强险',
-            insurance_company: '',
+            insurer: '',
             policy_number: '',
             start_date: '',
-            end_date: '',
+            expiry_date: '',
             premium: 0,
             coverage_amount: 0,
             notes: ''

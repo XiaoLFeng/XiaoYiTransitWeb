@@ -27,7 +27,7 @@ export interface CreateVehicleDTO extends Record<string, unknown> {
     /** 制造年份 */
     manufacture_year?: number;
     /** 座位数 */
-    seat_count?: number;
+    seats?: number;
     /** 发动机号 */
     engine_number?: string;
     /** 车架号 */
@@ -152,13 +152,13 @@ export interface CreateVehicleInsuranceDTO extends Record<string, unknown> {
     /** 保险类型 */
     insurance_type: string;
     /** 保险公司 */
-    insurance_company?: string;
+    insurer?: string;
     /** 保单号 */
     policy_number?: string;
     /** 保险开始日期 */
     start_date: string;
     /** 保险结束日期 */
-    end_date: string;
+    expiry_date: string;
     /** 保险费用 */
     premium?: number;
     /** 保险金额 */
@@ -192,7 +192,9 @@ export interface GetVehicleInsuranceListQueryDTO extends Record<string, unknown>
     /** 开始日期（可选，用于筛选） */
     start_date?: string;
     /** 结束日期（可选，用于筛选） */
-    end_date?: string;
+    expiry_date?: string;
+    /** 保险公司 */
+    insurer?: string;
 }
 
 /**

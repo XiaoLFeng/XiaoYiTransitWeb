@@ -80,7 +80,7 @@ export function VehicleDetailModal({ vehicle, onClose }: VehicleDetailModalProps
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">座位数</span>
-                                <span className="badge badge-outline">{vehicle.seat_count ? `${vehicle.seat_count}座` : '-'}</span>
+                                <span className="badge badge-outline">{vehicle.seats ? `${vehicle.seats}座` : '-'}</span>
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">当前状态</span>

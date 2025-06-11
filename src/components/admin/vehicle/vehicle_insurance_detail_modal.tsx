@@ -40,8 +40,8 @@ export function VehicleInsuranceDetailModal({ insurance, onClose }: VehicleInsur
         return end.getTime() < now.getTime();
     };
 
-    const expiringSoon = isExpiringSoon(insurance.end_date);
-    const expired = isExpired(insurance.end_date);
+    const expiringSoon = isExpiringSoon(insurance.expiry_date);
+    const expired = isExpired(insurance.expiry_date);
 
     return (
         <div className="modal modal-open">
@@ -52,7 +52,7 @@ export function VehicleInsuranceDetailModal({ insurance, onClose }: VehicleInsur
                         <h3 className="text-xl font-bold">{insurance.plate_number} - 保险详情</h3>
                         <div className="flex items-center space-x-3 mt-2">
                             <span className="text-sm opacity-60">保险类型: {insurance.insurance_type}</span>
-                            <span className="badge badge-outline">{insurance.insurance_company}</span>
+                            <span className="badge badge-outline">{insurance.insurer}</span>
                             {expired && <span className="badge badge-error">已过期</span>}
                             {!expired && expiringSoon && <span className="badge badge-warning">即将到期</span>}
                         </div>
@@ -78,7 +78,7 @@ export function VehicleInsuranceDetailModal({ insurance, onClose }: VehicleInsur
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">保险公司</span>
-                                <span>{insurance.insurance_company}</span>
+                                <span>{insurance.insurer}</span>
                             </div>
                             <div className="flex justify-between py-2 border-b border-base-200">
                                 <span className="font-medium">保单号</span>
@@ -92,7 +92,7 @@ export function VehicleInsuranceDetailModal({ insurance, onClose }: VehicleInsur
                                 <span className="font-medium">到期日期</span>
                                 <div className="flex items-center space-x-2">
                                     <span className={expired ? 'text-error' : expiringSoon ? 'text-warning' : ''}>
-                                        {formatDate(insurance.end_date)}
+                                        {formatDate(insurance.expiry_date)}
                                     </span>
                                     {expired && <span className="badge badge-error badge-xs">已过期</span>}
                                     {!expired && expiringSoon && <span className="badge badge-warning badge-xs">即将到期</span>}
@@ -128,15 +128,15 @@ export function VehicleInsuranceDetailModal({ insurance, onClose }: VehicleInsur
                         <div className="stat bg-base-200 rounded-lg">
                             <div className="stat-title">保险期限</div>
                             <div className="stat-value text-sm">
-                                {formatDate(insurance.start_date)} 至 {formatDate(insurance.end_date)}
+                                {formatDate(insurance.start_date)} 至 {formatDate(insurance.expiry_date)}
                             </div>
                         </div>
                         
                         <div className="stat bg-base-200 rounded-lg">
                             <div className="stat-title">剩余天数</div>
                             <div className={`stat-value text-2xl ${expired ? 'text-error' : expiringSoon ? 'text-warning' : 'text-success'}`}>
-                                {insurance.end_date ? 
-                                    Math.max(0, Math.ceil((new Date(insurance.end_date).getTime() - new Date().getTime()) / (1000 * 3600 * 24))) 
+                                {insurance.expiry_date ? 
+                                    Math.max(0, Math.ceil((new Date(insurance.expiry_date).getTime() - new Date().getTime()) / (1000 * 3600 * 24))) 
                                     : '-'
                                 } 天
                             </div>
