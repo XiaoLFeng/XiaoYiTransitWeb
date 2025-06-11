@@ -40,9 +40,6 @@ export function AdminSidebar({ collapsed, onToggleCollapse }: AdminSidebarProps)
         { id: 'stations', name: '站点管理', icon: '🚏', path: '/admin/stations' },
         { id: 'drivers', name: '司机管理', icon: '👨‍💼', path: '/admin/drivers' },
         { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' },
-        { id: 'reports', name: '统计报表', icon: '📈', path: '/admin/reports' },
-        { id: 'users', name: '用户管理', icon: '👥', path: '/admin/users' },
-        { id: 'settings', name: '系统设置', icon: '⚙️', path: '/admin/settings' },
     ];
 
     // 获取当前激活的菜单项
@@ -135,10 +132,7 @@ export function getMenuItemByPath(pathname: string): { id: string; name: string 
         { id: 'routes', name: '线路管理', icon: '🗺️', path: '/admin/routes' },
         { id: 'stations', name: '站点管理', icon: '🚏', path: '/admin/stations' },
         { id: 'drivers', name: '司机管理', icon: '👨‍💼', path: '/admin/drivers' },
-        { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' },
-        { id: 'reports', name: '统计报表', icon: '📈', path: '/admin/reports' },
-        { id: 'users', name: '用户管理', icon: '👥', path: '/admin/users' },
-        { id: 'settings', name: '系统设置', icon: '⚙️', path: '/admin/settings' },
+        { id: 'maintenance', name: '维护记录', icon: '🔧', path: '/admin/maintenance' }
     ];
 
     const activeItem = menuItems.find(item => item.path === pathname);

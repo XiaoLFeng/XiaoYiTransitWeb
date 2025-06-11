@@ -123,7 +123,7 @@ export function BaseAdmin() {
             />
 
             {/* 主要内容区域 */}
-            <div className={`transition-all duration-300 ${
+            <div className={`transition-all duration-300 flex flex-col h-screen ${
                 sidebarCollapsed ? 'ml-16' : 'ml-64'
             }`}>
                 {/* 顶部导航栏 */}
@@ -190,7 +190,7 @@ export function BaseAdmin() {
                 </header>
 
                 {/* 子路由内容 */}
-                <main className="p-6">
+                <main className="p-6 bg-base-200/25 flex-1">
                     <Routes>
                         <Route path="/dashboard" element={<AdminDashboard />} />
                         {/* 车辆管理路由 */}
@@ -202,42 +202,11 @@ export function BaseAdmin() {
                         <Route path="/routes" element={<AdminRouteManage />} />
                         <Route path="/drivers" element={<AdminDriverManage />} />
                         <Route path="/maintenance" element={<AdminMaintenanceManage />} />
-                        <Route path="/reports" element={<ComingSoonPage title="统计报表" />} />
-                        <Route path="/users" element={<ComingSoonPage title="用户管理" />} />
-                        <Route path="/settings" element={<ComingSoonPage title="系统设置" />} />
                         <Route path="/stations" element={<AdminStationManage />} />
                         {/* 默认重定向到仪表板 */}
                         <Route path="/" element={<AdminDashboard />} />
                     </Routes>
                 </main>
-            </div>
-        </div>
-    );
-}
-
-/**
- * # 即将推出页面组件
- * 用于显示尚未开发的功能模块
- */
-function ComingSoonPage({ title }: { title: string }) {
-    const navigate = useNavigate();
-
-    return (
-        <div className="card bg-base-100 shadow-xl">
-            <div className="card-body text-center">
-                <div className="text-6xl mb-4">🚧</div>
-                <h3 className="card-title justify-center text-2xl mb-4">{title}</h3>
-                <p className="text-base-content/70 mb-6">
-                    该功能模块正在开发中，敬请期待...
-                </p>
-                <div className="card-actions justify-center">
-                    <button 
-                        className="btn btn-primary"
-                        onClick={() => navigate('/admin/dashboard')}
-                    >
-                        返回仪表板
-                    </button>
-                </div>
             </div>
         </div>
     );

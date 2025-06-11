@@ -95,7 +95,7 @@ export function VehicleCreateModal({ formData, setFormData, onConfirm, onCancel 
                                     type="number"
                                     className="input input-bordered w-full"
                                     value={formData.seats}
-                                    onChange={(e) => handleInputChange('seat_count', Number(e.target.value))}
+                                    onChange={(e) => handleInputChange('seats', Number(e.target.value))}
                                     placeholder="请输入座位数"
                                     min="1"
                                     max="200"

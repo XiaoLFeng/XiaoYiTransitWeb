@@ -8,8 +8,8 @@ import { saveAuthData } from '../../assets/ts/auth_utils';
 
 export function AuthLogin() {
     const [formData, setFormData] = useState<AuthLoginDTO>({
-        username: '',
-        password: ''
+        username: 'super_admin',
+        password: 'super_admin'
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string>('');

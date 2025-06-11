@@ -6,9 +6,17 @@
 export function AdminDashboard() {
     return (
         <div className="space-y-6">
+            {/* 假页面提示 */}
+            <div className="alert alert-warning shadow-lg">
+                <div>
+                    <h3 className="font-bold">🚧 演示页面</h3>
+                    <div className="text-xs">这是一个演示页面，所有数据均为模拟数据。（作者：筱锋【昵称】）</div>
+                </div>
+            </div>
+
             {/* 统计卡片 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="stats shadow">
+                <div className="stats shadow bg-white">
                     <div className="stat">
                         <div className="stat-figure text-primary">
                             <span className="text-3xl">🚌</span>
@@ -19,7 +27,7 @@ export function AdminDashboard() {
                     </div>
                 </div>
 
-                <div className="stats shadow">
+                <div className="stats shadow bg-white">
                     <div className="stat">
                         <div className="stat-figure text-secondary">
                             <span className="text-3xl">🗺️</span>
@@ -30,7 +38,7 @@ export function AdminDashboard() {
                     </div>
                 </div>
 
-                <div className="stats shadow">
+                <div className="stats shadow bg-white">
                     <div className="stat">
                         <div className="stat-figure text-accent">
                             <span className="text-3xl">👨‍💼</span>
@@ -41,7 +49,7 @@ export function AdminDashboard() {
                     </div>
                 </div>
 
-                <div className="stats shadow">
+                <div className="stats shadow bg-white">
                     <div className="stat">
                         <div className="stat-figure text-info">
                             <span className="text-3xl">🔧</span>
