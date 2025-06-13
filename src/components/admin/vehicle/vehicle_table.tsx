@@ -96,7 +96,7 @@ export function VehicleTable({
                                                     <td>{vehicle.model}</td>
                                                     <td>{vehicle.manufacturer || '-'}</td>
                                                     <td>{vehicle.manufacture_year || '-'}</td>
-                                                    <td>{vehicle.seat_count ? `${vehicle.seat_count}座` : '-'}</td>
+                                                    <td>{vehicle.seats ? `${vehicle.seats}座` : '-'}</td>
                                                     <td>
                                                         <span className={`badge ${statusDisplay.color}`}>
                                                             {statusDisplay.label}
